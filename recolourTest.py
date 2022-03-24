@@ -21,9 +21,23 @@ datas = img.getdata()
 
 # show image in preview
 #img.show()
-
-for item in datas:
-    if item[0] == 128 and item[1] == 128 and item[2] == 0:
-        print("Olive")
-    else:
-        print("Not Olive")
+def senseOlive():
+    for item in datas:
+        if item[0] == 128 and item[1] == 128 and item[2] == 0:
+            print("Olive")
+        else:
+            print("Not Olive")
+            
+def whiteOlive():
+    for item in datas:
+        if item[0] == 128 and item[1] == 128 and item[2] == 0:
+            item[0] = 255
+            item[1] = 255
+            item[2] = 255
+            
+def reolive():
+    for item in datas:
+        if item[0] == 255 and item[1] == 255 and item[2] == 255:
+            item[0] = 128
+            item[1] = 128
+            item[2] = 0
