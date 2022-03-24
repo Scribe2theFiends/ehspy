@@ -179,6 +179,10 @@ def load():
     while x < len(songNAMElist):
         songListBox.insert(END, songNAMElist[x])
         x += 1
+        
+#INVERT COLOURS
+def invert():
+    #WORK ON THIS
 
 root = Tk()
 root.title("Ehspey")
@@ -264,6 +268,11 @@ saveLoadMenu = Menu(menu, tearoff=0)
 menu.add_cascade(label="Save/Load", menu=saveLoadMenu)
 saveLoadMenu.add_command(label="Save your current playlist", command=save)
 saveLoadMenu.add_command(label="Load a playlist", command=load)
+
+#COLOUR MENU
+colourMenu = Menu(menu, tearoff=0)
+menu.add_cascade(label="Colours", menu=colourMenu)
+colourMenu.add_command(label="Invert the colours", command=invert)
 
 #MAINLOOP
 root.mainloop()
