@@ -4,6 +4,9 @@ from tkinter import ttk
 from PIL import Image
 import eyed3
 import pygame
+import time
+import mutagen
+from mutagen.mp3 import MP3
 
 songDIRlist = []
 songNAMElist = []
@@ -68,16 +71,32 @@ def play():
     global songDIRlist
     global songNAMElist
     global paused
+    global stopped
     currentSong = songListBox.get(ACTIVE)
     playlistIndex = songNAMElist.index(currentSong)
     paused = False
+    stopped = False
     pygame.mixer.music.load(songDIRlist[playlistIndex])
     pygame.mixer.music.play(loops=0)
+    currentRuntime()
+
+#CURRENT RUNTIME
+def currentRuntime():
+    curRuntime = pygame.mixer.music.get_pos() / 1000
+    if stopped == False:
+        curRuntimeFormatted = time.strftime("%H:%M:%S", time.gmtime(curRuntime))
+    else:
+        curRuntimeFormatted = time.strftime("%H:%M:%S", time.gmtime(0))
+    timestamp.config(text=curRuntimeFormatted)
+    timestamp.after(1000, currentRuntime)
 
 #STOP PLAYING CURRENT SONG
+stopped = False
 def stop():
+    global stopped
     pygame.mixer.music.stop()
     songListBox.select_clear(ACTIVE)
+    stopped = True
 
 #PAUSE/UNPAUSE SELECTED SONG
 paused = False
@@ -140,7 +159,7 @@ def save():
     DIRdivide = "*"
     NAMEdivide = "*-*"
     x = 0
-    for i in range(1,len(songDIRlist)):
+    for i in range(0,len(songDIRlist)):
         if x == 0:
             songDIRlistString = songDIRlist[0]
             x+=1
@@ -148,7 +167,7 @@ def save():
             songDIRlistString = songDIRlistString + DIRdivide + songDIRlist[x]
             x+=1
     y = 0
-    for i in range(1,len(songNAMElist)):
+    for i in range(0,len(songNAMElist)):
         if y ==  0:
             songNAMElistString = songNAMElist[0]
             y+=1
@@ -242,6 +261,10 @@ forwardButton.grid(row=0, column=1, padx=4)
 playButton.grid(row=0, column=2, padx=4)
 pauseButton.grid(row=0, column=3, padx=4)
 stopButton.grid(row=0, column=4, padx=4)
+
+#CREATE TIMESTAMP
+timestamp = Label(root, text="", bd=1, relief=GROOVE, anchor=CENTER, bg=interface, fg=detail, width=16)
+timestamp.pack(side=BOTTOM, ipady=4)
 
 #CREATE MENU
 menu = Menu(root)
